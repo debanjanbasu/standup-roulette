@@ -27,6 +27,7 @@ const initialAttendees = [
   "Sijo",
   "Rino",
   "Shine",
+  "Dan"
 ].map((name) => {
   return {
     option: name,
