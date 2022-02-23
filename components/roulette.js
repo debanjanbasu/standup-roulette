@@ -1,20 +1,23 @@
 import { Wheel } from "react-custom-roulette";
 import { useState } from "react";
 
-const data = [
-  { option: "0", style: { backgroundColor: "green", textColor: "black" } },
-  { option: "1", style: { backgroundColor: "white" } },
-  { option: "2" },
-];
-
-const RouletteWheel = () => {
+const RouletteWheel = (props) => {
   const [mustSpin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
+  const attendees = props.attendees;
 
   const handleSpinClick = () => {
-    const newPrizeNumber = Math.floor(Math.random() * data.length);
+    const newPrizeNumber = Math.floor(Math.random() * attendees.length);
     setPrizeNumber(newPrizeNumber);
     setMustSpin(true);
+  };
+
+  const handleStopSpinning = () => {
+    setMustSpin(false);
+    props.setTimerFor(attendees[prizeNumber].option);
+    props.setAttendees(
+      attendees.filter((_attendee, index) => index !== prizeNumber)
+    );
   };
 
   return (
@@ -22,10 +25,8 @@ const RouletteWheel = () => {
       <Wheel
         mustStartSpinning={mustSpin}
         prizeNumber={prizeNumber}
-        data={data}
-        onStopSpinning={() => {
-          setMustSpin(false);
-        }}
+        data={attendees}
+        onStopSpinning={handleStopSpinning}
       />
       <button onClick={handleSpinClick}>SPIN</button>
     </>
